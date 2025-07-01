@@ -1,0 +1,12 @@
+
+TODO: try differents
+Free Blog Templates
+
+- Beautiful Jekyll
+https://github.com/daattali/beautiful-jekyll#readme
+
+- Minimal Mistakes
+https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/
+
+- Jekyll Now
+https://github.com/barryclark/jekyll-now
