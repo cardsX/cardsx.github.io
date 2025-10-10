@@ -54,7 +54,9 @@
           <li>BLAS (The Foundation): Provides the routines for fundamental operations (vector-vector, matrix-vector, and the critical Matrix-Matrix multiplication).</li>
           <li>LAPACK (The Builder): Relies entirely on BLAS to execute higher-level, more complex operations, such as Singular Value Decomposition (SVD), LU Decomposition, and solving systems of linear equations.</li>
         </ol>        
-        <p>Pre-compiled versions of NumPy often use unoptimized BLAS/LAPACK implementations. By replacing the underlying BLAS library with specialized versions like OpenBLAS or Intel MKL, we not only optimize individual matrix multiplications but automatically accelerate all the complex LAPACK routines that rely on them.</p>
+        <p>Modern NumPy installations, including those obtained via pip, are almost always linked to optimized BLAS implementations like OpenBLAS (as evidenced by the default scipy-openblas configuration). The use of an optimized BLAS library is crucial because it not only accelerates individual matrix multiplication operations but automatically extends this performance gain to all the complex LAPACK routines that rely on them.
+
+While not strictly necessary to achieve basic optimization, this experiment is vital for verification and granular control. Compiling NumPy and OpenBLAS manually allows us to rigorously isolate, configure, and test the impact of specific parameters—such as the number of threads—on the performance of BLAS and LAPACK routines.</p>
     </section>
 
     <section id="conclusione">
@@ -107,8 +109,8 @@
      
         <pre class="line-numbers">
             <code class="language-bash">
-$ sudo apt update
-$ sudo apt install build-essential gfortran python3-dev git
+sudo apt update
+sudo apt install build-essential gfortran python3-dev git
             </code>
         </pre>
   
@@ -216,8 +218,8 @@ python3 -m venv vproject
   
     <section id="introduzione">
       <h2>References</h2>
-          <a href="http://www.openmathlib.org/OpenBLAS/docs/developers/">OPENBLAS developer manual</a>
-          <a href="http://www.openmathlib.org/OpenBLAS/">OpenBLAS official webpage</a>
+          <a href="http://www.openmathlib.org/OpenBLAS/docs/developers/">OPENBLAS developer manual</a>, 
+          <a href="http://www.openmathlib.org/OpenBLAS/">OpenBLAS official webpage</a>, 
           <a href="https://github.com/OpenMathLib/OpenBLAS">OpenBLAS on GitHub</a>
         </p>
     </section>
