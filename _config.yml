@@ -1,3 +1,20 @@
-title: My Website
-baseurl: /
-url: "https://example.com"
+title: "John Doe's Site"
+description: "Homepage, projects, and blog"
+baseurl: "" # For user/organization site, leave empty
+url: "https://cardsx.github.io"
+markdown: kramdown
+kramdown:
+  math_engine: katex
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+collections:
+  posts:
+    output: true
+defaults:
+  -
+    scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
