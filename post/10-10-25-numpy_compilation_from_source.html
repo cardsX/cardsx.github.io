@@ -9,7 +9,7 @@
 <body>
   <header>
     <h1>Andrea Cardillo</h1>
-    <p style="text-align: center;">Mathematician... and Python Developer <!-- | <a href="mailto:a.cardillo@sunrise.ch">a.cardillo@sunrise.ch</a> --></p>
+    <p style="text-align: center;">Mathematician... and Python Developer</p>
     <nav>
       <!-- Optional: Add navigation links -->
     </nav>
@@ -64,38 +64,38 @@ While not strictly necessary to achieve basic optimization, this experiment is v
         <p>BLAS classifies operations based on their computational dimension. Understanding this classification is crucial to realizing why optimization is targeted:</p>
 <table>
   <caption>
-    BLAS operation classes
+    <i>BLAS operation classes</i>
   </caption>
   <thead>
     <tr>
-      <th scope="col">Class</th>
-      <th scope="col">Description</th>
-      <th scope="col">Complexity</th>
-      <th scope="col">Performance Impact</th>
+      <th scope="col" style="text-align: left;">Class</th>
+      <th scope="col" style="text-align: left;">Description</th>
+      <th scope="col" style="text-align: left;">Complexity</th>
+      <th scope="col" style="text-align: left;">Performance Impact</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th scope="row">1</th>
+      <th scope="row" style="text-align: left;">1</th>
       <td>Vector-Vector (i.e. Dot Product)</td>
       <td>O(n)</td>
       <td>Often limited by memory read/write speed (Memory-bound)</td>
     </tr>
     <tr>
-      <th scope="row">2</th>
+      <th scope="row" style="text-align: left;">2</th>
       <td>Matrix-Vector (i.e. Matrix-Vector Multiplication)</td>
       <td>O(n^2)</td>
       <td>Better compute/memory ratio, but still sensitive to latency.</td>
     </tr>
     <tr>
-      <th scope="row">3</th>
+      <th scope="row" style="text-align: left;">3</th>
       <td>Matrix-Matrix (i.e. GEMM)</td>
       <td>O(n^3)</td>
       <td>The maximum gain is here. The operation is limited by pure computational power (Compute-bound).</td>
     </tr>
   </tbody>
 </table>
-        <p>Optimized libraries focus their effort on Class 3 (GEMM) because, for large matrices, the cubic computation time (O(n3)) far exceeds data access time, allowing the CPU to operate at its maximum capacity.</p>  
+        <p>Optimized libraries focus their effort on Class 3, GEMM (General Matrix Multiplication), because, for large matrices, the cubic computation time, O(n^3), far exceeds data access time, allowing the CPU to operate at its maximum capacity.</p>  
     </section>
 
 
