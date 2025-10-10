@@ -35,6 +35,9 @@ h2 {
   color: #2b6cb0;
   margin-bottom: 0.5em;
 }
+p {
+  text-align: justify;
+}
 .projects {
   display: grid;
   grid-template-columns: repeat(auto-fit,minmax(240px,1fr));
