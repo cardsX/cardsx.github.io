@@ -1,0 +1,6 @@
+- name: "Project One"
+  description: "A Python library for X."
+  url: "https://github.com/cardsX/project-one"
+- name: "Project Two"
+  description: "A Bash automation toolkit."
+  url: "https://github.com/cardsX/project-two"

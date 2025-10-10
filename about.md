@@ -1,2 +1,8 @@
-# About
-This is the about page.
+---
+layout: default
+title: "About"
+---
+
+## About Me
+
+A brief biographical summary goes here.

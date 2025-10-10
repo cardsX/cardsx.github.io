@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{{ page.title }}</title>
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link id="prism-theme" rel="stylesheet" href="/assets/css/prism-default.css">
+  <link rel="stylesheet" href="/assets/css/sidebar.css">
+  <link rel="stylesheet" href="/assets/css/prism-dracula.css">
+  <link rel="stylesheet" href="/assets/css/prism-okaidia.css">
+  <script src="/assets/js/prism.js"></script>
+  <script src="/assets/js/prism-init.js"></script>
+  <script src="/assets/js/katex.min.js"></script>
+  <script src="/assets/js/math-init.js"></script>
+</head>
+<body>
+  {% include sidebar.html %}
+  <div class="content">
+    <h1>{{ page.title }}</h1>
+    <p>{{ page.abstract }}</p>
+    <small>{{ page.date }} | Tags: {{ page.tags | join: ', ' }}</small>
+    {{ content }}
+  </div>
+</body>
+</html>
