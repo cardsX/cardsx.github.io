@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Andrea | Portfolio</title>
+  <title>Andrea | Post</title>
   <link rel="stylesheet" href="/assets/css/main.css">
 </head>
 <body>
@@ -29,24 +29,20 @@
 <article class="blog-post">
     <header>
         <h1>NumPy Extreme: Compiling with Optimized BLAS for Maximum Performance</h1> 
-        
-        <p class="post-meta">Pubblicato il: <span>01/01/2025</span> | Autore: [Nome Autore]</p>
-        
-        <div class="abstract">
-            <p><strong>Abstract:</strong> Installing NumPy via standard package managers (like pip) often relies on generic implementations of the basic mathematical libraries (BLAS/LAPACK). For CPU-intensive calculations, this can seriously limit performance. This article guides you through the advanced process of compiling NumPy directly from source, linking it to optimized BLAS libraries such as OpenBLAS or Intel MKL. Following this procedure is crucial for maximizing the speed of linear algebra operations on high-performance systems.</p>
-        </div>
+        <p class="post-meta">Published: <span>10/10/2025</span> | Author: Andrea Cardillo</p>
     </header>
 
-    <section id="introduzione">
+  <section id="introduzione">
+        <h2>Abstract</h2>
+        <div class="abstract">
+            <p>Installing NumPy via standard package managers (like pip) often relies on generic implementations of the basic mathematical libraries (BLAS/LAPACK). For CPU-intensive calculations, this can seriously limit performance. This article guides you through the advanced process of compiling NumPy directly from source, linking it to optimized BLAS libraries such as OpenBLAS or Intel MKL. Following this procedure is crucial for maximizing the speed of linear algebra operations on high-performance systems.</p>
+        </div>
+
+  </section>  
+  <section id="introduzione">
         <h2>Keywords</h2>
         <p>NumPy, BLAS, LAPACK, OpenBLAS, Intel MKL, Compilation, Performance, HPC, Python, Linear Algebra.</p>
-        
-        <pre class="line-numbers">
-            <code class="language-python">
-                def esempio():
-                    return "Codice in Python"
-            </code>
-        </pre>
+
     </section>
 
     <section id="analisi-dettagliata">
@@ -78,20 +74,20 @@
   </thead>
   <tbody>
     <tr>
-      <th scope="row">Class 1</th>
-      <td>Vector-Vector (i.e., Dot Product)</td>
+      <th scope="row">1</th>
+      <td>Vector-Vector (i.e. Dot Product)</td>
       <td>O(n)</td>
       <td>Often limited by memory read/write speed (Memory-bound)</td>
     </tr>
     <tr>
-      <th scope="row">Class 2</th>
-      <td>Matrix-Vector (e.g., Matrix-Vector Multiplication)</td>
+      <th scope="row">2</th>
+      <td>Matrix-Vector (i.e. Matrix-Vector Multiplication)</td>
       <td>O(n^2)</td>
-      <td></td>Better compute/memory ratio, but still sensitive to latency.</td>
+      <td>Better compute/memory ratio, but still sensitive to latency.</td>
     </tr>
     <tr>
-      <th scope="row">Class 3</th>
-      <td>Matrix-Matrix (i.e., GEMM)</td>
+      <th scope="row">3</th>
+      <td>Matrix-Matrix (i.e. GEMM)</td>
       <td>O(n^3)</td>
       <td>The maximum gain is here. The operation is limited by pure computational power (Compute-bound).</td>
     </tr>
@@ -106,6 +102,7 @@
         <p>Before starting, ensure you have all the necessary development tools and Git to clone the NumPy repository.</p>
       
 
+      <strong>A. Essential Tools</strong>
       <p>Install the Fortran compiler (necessary for BLAS/LAPACK) and development packages:</p>
      
         <pre class="line-numbers">
@@ -114,22 +111,114 @@ $ sudo apt update
 $ sudo apt install build-essential gfortran python3-dev git
             </code>
         </pre>
+  
+      <strong>B. Installing OpenBLAS (Local User)</strong>
+        <pre class="line-numbers">
+            <code class="language-bash">
+cd /tmp
+git clone --depth 1 https://github.com/OpenMathLib/OpenBLAS.git
+cd OpenBLAS
+OPENBLAS_INSTALL_DIR="$HOME/local/openblas"
+mkdir -p $OPENBLAS_INSTALL_DIR
+make -j $(nproc) USE_OPENMP=1 DYNAMIC_ARCH=1 FC=gfortran
+make install PREFIX=$OPENBLAS_INSTALL_DIR 
+unset OPENBLAS_INSTALL_DIR
+rm -rf /tmp/OpenBLAS           
+            </code>
+        </pre>
+<p>The OpenBLAS library is now installed in ~/local/openblas/.</p>
+      <strong>C. Installing OpenBLAS (Local User)</strong>
+      <p>Edit the user profile, i.e. the .bashrc, to add the environment variables</p>
+        <pre class="line-numbers">
+            <code class="language-bash">
+# make OpenBLAS accessible to the linker at runtime 
+export PKG_CONFIG_PATH="$HOME/local/openblas/lib/pkgconfig:$PKG_CONFIG_PATH"
+export LD_LIBRARY_PATH="$HOME/local/openblas/lib:$LD_LIBRARY_PATH"
+export BLAS_LIBS="-L$HOME/local/openblas/lib -lopenblas"
+export LAPACK_LIBS="-L$HOME/local/openblas/lib -lopenblas"
+export FC=gfortran # force the choice of the compiler
+# specify the amount of threads - you can change it!
+export OPENBLAS_NUM_THREADS="4"
+export GOTO_NUM_THREADS="4"
+export OMP_NUM_THREADS="4"
+            </code>
+        </pre>
+
+<strong>OpenBLAS and OpenMP: Parallelization</strong>
+
+<p>OpenBLAS achieves its superior performance through the aggressive use of the OpenMP (Open Multi-Processing) framework.</p>
+
+<p>OpenMP is an API that supports parallel programming in shared-memory environments (your CPU cores). When OpenBLAS executes intensive Class 3 (GEMM) operations:</p>
+<ol>
+    <li>It uses OpenMP directives to split the matrix multiplication operation into smaller, independent blocks.</li>
+    <li>These blocks are distributed as parallel tasks across all available logical cores.</li>
+</ol>
+<p>In this way, OpenBLAS acts as the threading engine that turns a single-threaded NumPy calculation into a multi-core operation, ensuring that your linear algebra calculations are limited by your processing power, not the software.</p>
     </section>
 
+    <section id="introduzione">
+        <h2>Step 2: Configuring NumPy's backend for BLAS</h2>
+        <p>NumPy uses a file named ~/.numpy-site.cfg for a local configuration (or site.cfg, for a global configuration) to know where to find the BLAS/LAPACK libraries.</p>
 
+        <strong>Locating the BLAS libraries</strong>
+        <pre class="line-numbers">
+            <code class="language-bash">
+cat << EOF > ~/.numpy-site.cfg
+[openblas]
+libraries = openblas
+library_dirs = $HOME/local/openblas/lib
+include_dirs = $HOME/local/openblas/include
 
+[lapack]
+libraries = openblas
+library_dirs = $HOME/local/openblas/lib
+include_dirs = $HOME/local/openblas/include
+EOF             
+            </code>
+        </pre>
+    </section>
+      
 
+    <section id="introduzione">
+        <h2>Step 3: Preparing the Compilation Environment</h2>
+        <p>Let's create a clean environment and prepare the NumPy sources.</p>
 
+        <strong>Install NumPy in a new fresh environment</strong>
+        <pre class="line-numbers">
+            <code class="language-bash">
+python3 -m venv vproject
+(vproject) python -m pip install -U pip
+(vproject) python -m pip install --no-cache numpy --no-binary numpy --verbose              
+            </code>
+        </pre>
 
+        <strong>Verify Installation:</strong>
+        <pre class="line-numbers">
+            <code class="language-bash">
+(vproject) python -c "import numpy as np; np.show_config()"
+            </code>
+        </pre>
 
+    </section>
 
   
-    <footer>
-        <p class="tags">Keywords: [Keyword1, Keyword2, Keyword3]</p>
-        <p>Riferimenti: [Fonte A], [Fonte B]</p>
-    </footer>
+    <section id="introduzione">
+        <h2>Conclusion: Optimization and Context</h2>
+        <p>Compiling NumPy with an optimized BLAS library is not a miracle cure for every user. For developers performing standard numerical operations or working with small datasets, the performance gain compared to the version provided by pip can be minimal or negligible.</p>
 
+        <p>However, this process is essential and offers tangible value in specific contexts:</p>
+        <ol>
+           <li>HPC/Scientific Workloads: For those managing intensive linear algebra calculations, such as large matrix analysis, scientific simulations, or machine learning model training on dedicated hardware, optimizing the machine code (by exploiting AVX/FMA instructions) can lead to significant time savings that accumulate over time.</li>
+            <li>Transparency and Control: This procedure ensures you have total control over the underlying dependencies, eliminating any doubt about potential bottlenecks caused by unoptimized BLAS/LAPACK.</li>
+        </ol>
+        <p>Ultimately, if benchmarks show that BLAS operations are your primary bottleneck, compiling from source is the only way to extract maximum efficiency from your hardware. For everyone else, the standard installation via pip remains the fastest and most practical choice.</p>
+    </section>
+  
+    <section>
+        <strong>References:</strong><p class="tags">Source 1, </p>
+    </section>
 </article>
+
 <aside class="sidebar-navigation">
     <h3>Indice dei Post</h3>
     <nav>
