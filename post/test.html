@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Andrea | Portfolio</title>
+  <link rel="stylesheet" href="/assets/css/main.css">
+</head>
+<body>
+  <header>
+    <h1>Andrea Cardillo</h1>
+    <p>Mathematician... and Python Developer <!-- | <a href="mailto:a.cardillo@sunrise.ch">a.cardillo@sunrise.ch</a> --></p>
+    <nav>
+      <!-- Optional: Add navigation links -->
+    </nav>
+  </header>
+  <main>
+    <!-- 
+        WORK in PROGRESS
+    -->
+    <!--
+    <section style="text-align:center;font-size:16px;color:red;">
+        🚧 <b>Work in progress!</b> 🚧 
+    </section>
+    --> <!-- &#x1F6A7; -->
+    <!-- 
+        BLOG      
+    -->
+<article class="blog-post">
+    <header>
+        <h1>NumPy Extreme: Compiling with Optimized BLAS for Maximum Performance</h1> 
+        
+        <p class="post-meta">Pubblicato il: <span>01/01/2025</span> | Autore: [Nome Autore]</p>
+        
+        <div class="abstract">
+            <p><strong>Abstract:</strong> Installing NumPy via standard package managers (like pip) often relies on generic implementations of the basic mathematical libraries (BLAS/LAPACK). For CPU-intensive calculations, this can seriously limit performance. This article guides you through the advanced process of compiling NumPy directly from source, linking it to optimized BLAS libraries such as OpenBLAS or Intel MKL. Following this procedure is crucial for maximizing the speed of linear algebra operations on high-performance systems.</p>
+        </div>
+    </header>
+
+    <section id="introduzione">
+        <h2>Keywords</h2>
+        <p>NumPy, BLAS, LAPACK, OpenBLAS, Intel MKL, Compilation, Performance, HPC, Python, Linear Algebra.</p>
+        
+        <pre class="line-numbers">
+            <code class="language-python">
+                def esempio():
+                    return "Codice in Python"
+            </code>
+        </pre>
+    </section>
+
+    <section id="analisi-dettagliata">
+        <h2>Introduction: Why Compile From Source?</h2>
+        <p>NumPy is the foundation of scientific computing in Python. Much of its speed comes from delegating linear algebra operations (like matrix multiplication) to underlying libraries written in C or Fortran, known as BLAS (Basic Linear Algebra Subprograms) and LAPACK (Linear Algebra PACKage).</p>
+
+        <p>The Complementary Roles of BLAS and LAPACK</p>
+        <ol>
+          <li>BLAS (The Foundation): Provides the routines for fundamental operations (vector-vector, matrix-vector, and the critical Matrix-Matrix multiplication).</li>
+          <li>LAPACK (The Builder): Relies entirely on BLAS to execute higher-level, more complex operations, such as Singular Value Decomposition (SVD), LU Decomposition, and solving systems of linear equations.</li>
+        </ol>        
+        <p>Pre-compiled versions of NumPy often use unoptimized BLAS/LAPACK implementations. By replacing the underlying BLAS library with specialized versions like OpenBLAS or Intel MKL, we not only optimize individual matrix multiplications but automatically accelerate all the complex LAPACK routines that rely on them.</p>
+    </section>
+
+    <section id="conclusione">
+        <h2>BLAS Operation Classes: What Are We Optimizing?</h2>
+        <p>BLAS classifies operations based on their computational dimension. Understanding this classification is crucial to realizing why optimization is targeted:</p>
+<table>
+  <caption>
+    BLAS operation classes
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Class</th>
+      <th scope="col">Description</th>
+      <th scope="col">Complexity</th>
+      <th scope="col">Performance Impact</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Class 1</th>
+      <td>Vector-Vector (i.e., Dot Product)</td>
+      <td>O(n)</td>
+      <td>Often limited by memory read/write speed (Memory-bound)</td>
+    </tr>
+    <tr>
+      <th scope="row">Class 2</th>
+      <td>Matrix-Vector (e.g., Matrix-Vector Multiplication)</td>
+      <td>O(n^2)</td>
+      <td></td>Better compute/memory ratio, but still sensitive to latency.</td>
+    </tr>
+    <tr>
+      <th scope="row">Class 3</th>
+      <td>Matrix-Matrix (i.e., GEMM)</td>
+      <td>O(n^3)</td>
+      <td>The maximum gain is here. The operation is limited by pure computational power (Compute-bound).</td>
+    </tr>
+  </tbody>
+</table>
+        <p>Optimized libraries focus their effort on Class 3 (GEMM) because, for large matrices, the cubic computation time (O(n3)) far exceeds data access time, allowing the CPU to operate at its maximum capacity.</p>  
+    </section>
+
+
+    <section id="introduzione">
+        <h2>Step 1: Installing Prerequisites</h2>
+        <p>Before starting, ensure you have all the necessary development tools and Git to clone the NumPy repository.</p>
+      
+
+      <p>Install the Fortran compiler (necessary for BLAS/LAPACK) and development packages:</p>
+     
+        <pre class="line-numbers">
+            <code class="language-bash">
+$ sudo apt update
+$ sudo apt install build-essential gfortran python3-dev git
+            </code>
+        </pre>
+    </section>
+
+
+
+
+
+
+
+
+  
+    <footer>
+        <p class="tags">Keywords: [Keyword1, Keyword2, Keyword3]</p>
+        <p>Riferimenti: [Fonte A], [Fonte B]</p>
+    </footer>
+
+</article>
+<aside class="sidebar-navigation">
+    <h3>Indice dei Post</h3>
+    <nav>
+        <ul>
+            <li><a href="/post-a">Post Correlato A</a></li>
+            </ul>
+    </nav>
+</aside>
+
+    </main>
+      <!-- 
+          FOOTER      
+      -->  
+    <footer>
+      &copy; 2025 Andrea Cardillo
+    </footer>
+     
+</body>
+</html>
