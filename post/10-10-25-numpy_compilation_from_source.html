@@ -200,12 +200,14 @@ EOF
         <pre class="line-numbers">
             <code class="language-bash">
 python3 -m venv vproject
+cd vproject
 (vproject) python -m pip install -U pip
 (vproject) python -m pip install --no-cache numpy --no-binary numpy --verbose              
             </code>
         </pre>
 
         <strong>Verify Installation:</strong>
+        <p>Show libraries in the system on which NumPy was built with <a href="https://numpy.org/doc/1.24/reference/generated/numpy.show_config.html">numpy.np.show_config</a>.</p>
         <pre class="line-numbers">
             <code class="language-bash">
 (vproject) python -c "import numpy as np; np.show_config()" | grep "include dir"
@@ -229,29 +231,27 @@ python3 -m venv vproject
   
     <section id="introduzione">
       <h2>References</h2>
-        <p>
-          OPENBLAS: <a href="http://www.openmathlib.org/OpenBLAS/docs/developers/">developer manual</a>, 
-                    <a href="http://www.openmathlib.org/OpenBLAS/">official webpage</a>, 
-                    <a href="https://github.com/OpenMathLib/OpenBLAS">GitHub</a>
-        </p>
-        <p>
-          BLAS <a href="https://netlib.org/blas/index.html#_blas_routines">routines</a>
-        </p>
-        <p>
-          Benchmarks: STREAM <a href="https://www.cs.virginia.edu/stream/ref.html">webpage</a> and <a href="https://github.com/jeffhammond/STREAM">GitHub</a>
-        </p>
+        <ul>
+            <li>
+              OPENBLAS: <a href="http://www.openmathlib.org/OpenBLAS/docs/developers/">developer manual</a>, 
+                        <a href="http://www.openmathlib.org/OpenBLAS/">official webpage</a>, 
+                        <a href="https://github.com/OpenMathLib/OpenBLAS">GitHub</a>
+            </li>
+            <li>BLAS: <a href="https://netlib.org/blas/index.html#_blas_routines">routines</a></li>
+            <li>Benchmarks: STREAM <a href="https://www.cs.virginia.edu/stream/ref.html">webpage</a> and <a href="https://github.com/jeffhammond/STREAM">GitHub</a></li>        
+        </ul>
     </section>
 </article>
-
+    <!--
     <section id="introduzione">
       <h2>Related articles</h2>
     <nav>
         <ul>
             <li><a href="/post-a">Post correlated X</a></li>
-            </ul>
+        </ul>
     </nav>
 </aside>
-
+-->
     </main>
       <!-- 
           FOOTER      
