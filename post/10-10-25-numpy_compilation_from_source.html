@@ -119,10 +119,10 @@ sudo apt install build-essential gfortran python3-dev git
         <pre class="line-numbers">
             <code class="language-bash">
 OPENBLAS_INSTALL_DIR="$HOME/local/openblas"
+mkdir -p $OPENBLAS_INSTALL_DIR
 cd /tmp
 git clone --depth 1 https://github.com/OpenMathLib/OpenBLAS.git
 cd OpenBLAS
-mkdir -p $OPENBLAS_INSTALL_DIR
 make \
     -j $(nproc) \
     DYNAMIC_ARCH=1 \
@@ -150,9 +150,10 @@ export LD_LIBRARY_PATH="$HOME/local/openblas/lib:$LD_LIBRARY_PATH"
 export BLAS_LIBS="-L$HOME/local/openblas/lib -lopenblas"
 export LAPACK_LIBS="-L$HOME/local/openblas/lib -lopenblas"
 export FC=gfortran # force the choice of the compiler
-# specify the amount of threads - you can change it!
+
+# specify the amount of threads - it depends on the hardware
 export OPENBLAS_NUM_THREADS="4"
-export GOTO_NUM_THREADS="4"
+export GOTO_NUM_THREADS="4" # for compatibility with previous versions, neglatable
 export OMP_NUM_THREADS="4"
             </code>
         </pre>
@@ -199,10 +200,10 @@ EOF
         <strong>Install NumPy in a new fresh environment</strong>
         <pre class="line-numbers">
             <code class="language-bash">
-python3 -m venv vproject
-cd vproject
-(vproject) python -m pip install -U pip
-(vproject) python -m pip install --no-cache numpy --no-binary numpy --verbose              
+python3 -m venv myblas
+cd myblas
+(myblas) python -m pip install -U pip
+(myblas) python -m pip install --no-cache numpy --no-binary numpy #--verbose              
             </code>
         </pre>
 
@@ -210,7 +211,7 @@ cd vproject
         <p>Show libraries in the system on which NumPy was built with <a href="https://numpy.org/doc/1.24/reference/generated/numpy.show_config.html">numpy.np.show_config</a>.</p>
         <pre class="line-numbers">
             <code class="language-bash">
-(vproject) python -c "import numpy as np; np.show_config()" | grep "include dir"
+(myblas) python -c "import numpy as np; np.show_config()" | grep "include dir"
             </code>
         </pre>
 
