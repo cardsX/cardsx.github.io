@@ -29,7 +29,8 @@
 <article class="blog-post">
     <header>
         <h1>NumPy Extreme: Compiling with Optimized BLAS for Maximum Performance</h1> 
-        <p class="post-meta", style="text-align: center;">Published: <span>10/10/2025</span> | Author: Andrea Cardillo</p>
+        <p class="post-meta", style="text-align: center;">Author: Andrea Cardillo</p>
+        <p class="post-meta", style="text-align: center;">Published: <span>10/10/2025</span> | Edited: <span>10/10/2025</span></p>
     </header>
 
   <section id="introduzione">
@@ -41,7 +42,7 @@
   </section>  
   <section id="introduzione">
         <h2>Keywords</h2>
-        <p>NumPy, BLAS, LAPACK, OpenBLAS, Intel MKL, Compilation, Performance, HPC, Python, Linear Algebra, Linux.</p>
+        <p>NumPy, BLAS, LAPACK, OpenBLAS, Compilation, Performance, HPC, Python, Linear Algebra, Linux.</p>
 
     </section>
 
@@ -56,7 +57,7 @@
         </ol>        
         <p>Modern NumPy installations, including those obtained via pip, are almost always linked to optimized BLAS implementations like OpenBLAS (as evidenced by the default scipy-openblas configuration). The use of an optimized BLAS library is crucial because it not only accelerates individual matrix multiplication operations but automatically extends this performance gain to all the complex LAPACK routines that rely on them.
 
-While not strictly necessary to achieve basic optimization, this experiment is vital for verification and granular control. Compiling NumPy and OpenBLAS manually allows us to rigorously isolate, configure, and test the impact of specific parameters—such as the number of threads—on the performance of BLAS and LAPACK routines.</p>
+While not strictly necessary to achieve basic optimization, this experiment is vital for verification and granular control. Compiling NumPy and OpenBLAS manually allows us to rigorously isolate, configure, and test the impact of specific parameters — such as the number of threads — on the performance of BLAS and LAPACK routines.</p>
     </section>
 
     <section id="conclusione">
@@ -117,12 +118,22 @@ sudo apt install build-essential gfortran python3-dev git
       <strong>B. Installing OpenBLAS (Local User)</strong>
         <pre class="line-numbers">
             <code class="language-bash">
+OPENBLAS_INSTALL_DIR="$HOME/local/openblas"
 cd /tmp
 git clone --depth 1 https://github.com/OpenMathLib/OpenBLAS.git
 cd OpenBLAS
-OPENBLAS_INSTALL_DIR="$HOME/local/openblas"
 mkdir -p $OPENBLAS_INSTALL_DIR
-make -j $(nproc) USE_OPENMP=1 DYNAMIC_ARCH=1 FC=gfortran
+make \
+    -j $(nproc) \
+    DYNAMIC_ARCH=1 \
+    USE_OPENMP=1 \
+    NUMA_KEEP=1 \
+    L2_SIZE=512 \
+    L3_SIZE=3072 \
+    ALIGNMENT=64 \
+    MAX_THREADS=2 \
+    TARGET=HASWELL \
+    FC=gfortran
 make install PREFIX=$OPENBLAS_INSTALL_DIR 
 unset OPENBLAS_INSTALL_DIR
 rm -rf /tmp/OpenBLAS           
@@ -197,7 +208,7 @@ python3 -m venv vproject
         <strong>Verify Installation:</strong>
         <pre class="line-numbers">
             <code class="language-bash">
-(vproject) python -c "import numpy as np; np.show_config()"
+(vproject) python -c "import numpy as np; np.show_config()" | grep "include dir"
             </code>
         </pre>
 
@@ -218,9 +229,16 @@ python3 -m venv vproject
   
     <section id="introduzione">
       <h2>References</h2>
-          <a href="http://www.openmathlib.org/OpenBLAS/docs/developers/">OPENBLAS developer manual</a>, 
-          <a href="http://www.openmathlib.org/OpenBLAS/">OpenBLAS official webpage</a>, 
-          <a href="https://github.com/OpenMathLib/OpenBLAS">OpenBLAS on GitHub</a>
+        <p>
+          OPENBLAS: <a href="http://www.openmathlib.org/OpenBLAS/docs/developers/">developer manual</a>, 
+                    <a href="http://www.openmathlib.org/OpenBLAS/">official webpage</a>, 
+                    <a href="https://github.com/OpenMathLib/OpenBLAS">GitHub</a>
+        </p></br>
+        <p>
+          BLAS <a href="https://netlib.org/blas/index.html#_blas_routines">routines</a>
+        </p></br>
+        <p>
+          Benchmarks: STREAM <a href="https://www.cs.virginia.edu/stream/ref.html">webpage</a> and <a href="https://github.com/jeffhammond/STREAM">GitHub</a>
         </p>
     </section>
 </article>
